@@ -14,6 +14,7 @@ configBuilder.AddJsonFile("appsettings.json")
 // Add services to the container.
 
 builder.Services.AddDbContext<BillingContext>();
+builder.Services.AddScoped<IBillingRepository, BillingRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
