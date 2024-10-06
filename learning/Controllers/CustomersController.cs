@@ -22,7 +22,7 @@ namespace learning.Controllers
             return await _repository.GetCustomers();
         }
 
-        [HttpGet("{id}", Name = "GetCustomer")]
+        [HttpGet("{id:int}", Name = "GetCustomer")]
         [Produces("application/json")]
         public async Task<ActionResult<Customer>> GetOne(int id)
         {
