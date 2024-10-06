@@ -7,5 +7,7 @@ namespace learning.Data
         Task<IEnumerable<Customer>> GetCustomers();
         Task<IEnumerable<Employee>> GetEmployees();
         Task<bool> SaveChanges();
+        Task<Customer?> GetCustomer(int id);
+
     }
 }

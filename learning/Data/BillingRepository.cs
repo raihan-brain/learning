@@ -57,5 +57,21 @@ namespace learning.Data
                 throw;
             }
         }
+
+        public async Task<Customer?> GetCustomer(int id)
+        {
+            try
+            {
+                return await _context.customers
+                       .Where(c => c.Id == id)
+                       .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError($"could not get customer: {ex.Message}");
+                throw;
+            }
+        }
     }
 }
