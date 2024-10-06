@@ -73,5 +73,21 @@ namespace learning.Data
                 throw;
             }
         }
+
+        public async Task<IEnumerable<Customer>> GetCustomersWithAddress()
+        {
+            try
+            {
+                return await _context.customers
+                    .Include(c => c.Address)
+                     .OrderBy(c => c.CompanyName)
+                     .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"could not get customerts: {ex.Message}");
+                throw;
+            }
+        }
     }
 }

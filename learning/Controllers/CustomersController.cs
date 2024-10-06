@@ -19,9 +19,26 @@ namespace learning.Controllers
 
         [HttpGet(Name = "GetCustomers")]
         [Produces("application/json")]
-        public async Task<IEnumerable<Customer>> Get()
+        public async Task<ActionResult<IEnumerable<Customer>>> Get(bool withAddress = false)
         {
-            return await _repository.GetCustomers();
+            try
+            {
+                IEnumerable<Customer> result;
+                if (withAddress)
+                {
+                    result = await _repository.GetCustomersWithAddress();
+                }
+                else
+                {
+                    result = await _repository.GetCustomers();
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Failed to get customers from database");
+                return Problem($"Exception thrown: {ex.Message}");
+            }
         }
 
         [HttpGet("{id:int}", Name = "GetCustomer")]
@@ -40,7 +57,7 @@ namespace learning.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("Exception thrown while reading cudtomer by ID   ");
-                return Problem($"Exception thrown: {ex.Message }");
+                return Problem($"Exception thrown: {ex.Message}");
             }
         }
     }
