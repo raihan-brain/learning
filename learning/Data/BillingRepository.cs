@@ -89,5 +89,10 @@ namespace learning.Data
                 throw;
             }
         }
+
+        public void AddEntity<T>(T cus) where T : notnull
+        {
+            _context.Add(cus);
+        }
     }
 }

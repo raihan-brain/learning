@@ -7,6 +7,7 @@ namespace learning.Data
         Task<IEnumerable<Customer>> GetCustomers();
         Task<IEnumerable<Customer>> GetCustomersWithAddress();
         Task<IEnumerable<Employee>> GetEmployees();
+        void AddEntity<T>(T cus) where T : notnull;
         Task<bool> SaveChanges();
         Task<Customer?> GetCustomer(int id);
 

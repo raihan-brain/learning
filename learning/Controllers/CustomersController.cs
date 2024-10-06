@@ -60,5 +60,30 @@ namespace learning.Controllers
                 return Problem($"Exception thrown: {ex.Message}");
             }
         }
+        [HttpPost(Name = "SaveCustomer")]
+        [Produces("application/json")]
+        public async Task<ActionResult<Customer>> SaveCustomer(Customer customer)
+        {
+            try
+            {
+                _repository.AddEntity(customer);
+                if (await _repository.SaveChanges())
+                {
+                    return CreatedAtRoute("GetCustomer", new { id = customer.Id }, customer);
+                }
+                else
+                {
+                    return BadRequest("Failed to save customer");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Exception thrown while saving customer data");
+                return Problem($"Exception thrown: {ex.Message}");
+            }
+        }
+
+        // write a method that will save customer data to db
+
     }
 }
