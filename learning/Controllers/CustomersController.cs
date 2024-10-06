@@ -9,10 +9,12 @@ namespace learning.Controllers
     public class CustomersController : Controller
     {
         private readonly IBillingRepository _repository;
+        private readonly ILogger<CustomersController> _logger;
 
-        public CustomersController(IBillingRepository repository)
+        public CustomersController(IBillingRepository repository, ILogger<CustomersController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet(Name = "GetCustomers")]
@@ -26,12 +28,20 @@ namespace learning.Controllers
         [Produces("application/json")]
         public async Task<ActionResult<Customer>> GetOne(int id)
         {
-            var customer = await _repository.GetCustomer(id);
-            if (customer == null)
+            try
             {
-                return NotFound();
+                var customer = await _repository.GetCustomer(id);
+                if (customer == null)
+                {
+                    return NotFound();
+                }
+                return Ok(customer);
             }
-            return customer;
+            catch (Exception ex)
+            {
+                _logger.LogError("Exception thrown while reading cudtomer by ID   ");
+                return Problem($"Exception thrown: {ex.Message }");
+            }
         }
     }
 }
