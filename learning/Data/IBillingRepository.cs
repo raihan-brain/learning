@@ -10,6 +10,6 @@ namespace learning.Data
         void AddEntity<T>(T cus) where T : notnull;
         Task<bool> SaveChanges();
         Task<Customer?> GetCustomer(int id);
-
+        Task<TimeBill?> GetTimeBill(int id);
     }
 }
