@@ -1,5 +1,6 @@
 ﻿using learning.Data;
 using learning.Data.Entities;
+using learning.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace learning.Controllers
@@ -39,15 +40,24 @@ namespace learning.Controllers
 
         [HttpPost(Name = "SaveTimeBill")]
         [Produces("application/json")]
-        public async Task<ActionResult<TimeBill>> SaveTimeBill([FromBody] TimeBill timeBill)
+        public async Task<ActionResult<TimeBill>> SaveTimeBill([FromBody] TimeBillModel model)
         {
             try
             {
-                _repository.AddEntity(timeBill);
+                var newEntity = new TimeBill()
+                {
+                    EmployeeId = model.EmployeeId,
+                    CustomerId = model.CustomerId,
+                    Hours = model.HoursWorked,
+                    BillingRate = model.Rate,
+                    Date = model.Date,
+                    WorkedPerformed = model.Work
+                };
+                _repository.AddEntity(newEntity);
                 if (await _repository.SaveChanges())
                 {
-                    var newBill = await _repository.GetTimeBill(timeBill.Id);
-                    return CreatedAtRoute("GetOneTimeBill", new { id = timeBill.Id }, timeBill);
+                    var newBill = await _repository.GetTimeBill(newEntity.Id);
+                    return CreatedAtRoute("GetOneTimeBill", new { id = newEntity.Id }, newBill);
                 }
                 else
                 {
