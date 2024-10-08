@@ -97,7 +97,12 @@ namespace learning.Data
 
         public async Task<TimeBill?> GetTimeBill(int id)
         {
-            var bill = await _context.timeBills.FindAsync(id);
+            var bill = await _context.timeBills
+                .Include(b => b.Employee)
+                .Include(b => b.Customer)
+                .ThenInclude(c => c.Address)
+                .Where(b => b.Id == id)
+                .FirstOrDefaultAsync();
             return bill;
         }
     }

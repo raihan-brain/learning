@@ -46,6 +46,7 @@ namespace learning.Controllers
                 _repository.AddEntity(timeBill);
                 if (await _repository.SaveChanges())
                 {
+                    var newBill = await _repository.GetTimeBill(timeBill.Id);
                     return CreatedAtRoute("GetOneTimeBill", new { id = timeBill.Id }, timeBill);
                 }
                 else
