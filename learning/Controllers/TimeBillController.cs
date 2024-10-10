@@ -1,7 +1,8 @@
-﻿using FluentValidation;
-using learning.Data;
+﻿using learning.Data;
 using learning.Data.Entities;
+using learning.Filters;
 using learning.Models;
+using learning.Validators;
 using Microsoft.AspNetCore.Mvc;
 
 namespace learning.Controllers
@@ -43,17 +44,11 @@ namespace learning.Controllers
 
         [HttpPost(Name = "SaveTimeBill")]
         [Produces("application/json")]
-        public async Task<ActionResult<TimeBill>> SaveTimeBill([FromBody] TimeBillModel model, IValidator<TimeBillModel> validator)
+        [ServiceFilter(typeof(ValidateModelFilter<TimeBillModel>))]// Ensure ValidateEndPointFilter is defined in the learning.Filters namespace
+        public async Task<ActionResult<TimeBill>> SaveTimeBill([FromBody] TimeBillModel model)
         {
             try
             {
-                var validation = await validator.ValidateAsync(model);
-
-                if (!validation.IsValid)
-                {
-                    var validationProblemDetails = new ValidationProblemDetails(validation.ToDictionary());
-                    return ValidationProblem(validationProblemDetails);
-                }
 
                 var newEntity = new TimeBill()
                 {
