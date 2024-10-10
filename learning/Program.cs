@@ -1,4 +1,7 @@
+using FluentValidation;
 using learning.Data;
+using learning.Models;
+using learning.Validators;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,10 +20,11 @@ builder.Services.AddDbContext<BillingContext>();
 builder.Services.AddScoped<IBillingRepository, BillingRepository>();
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IValidator<TimeBillModel>, TimeBillModelValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<TimeBillModelValidator>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

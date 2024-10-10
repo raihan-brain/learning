@@ -1,4 +1,5 @@
-﻿using learning.Data;
+﻿using FluentValidation;
+using learning.Data;
 using learning.Data.Entities;
 using learning.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -38,12 +39,22 @@ namespace learning.Controllers
             }
         }
 
+        // ... other code ...
+
         [HttpPost(Name = "SaveTimeBill")]
         [Produces("application/json")]
-        public async Task<ActionResult<TimeBill>> SaveTimeBill([FromBody] TimeBillModel model)
+        public async Task<ActionResult<TimeBill>> SaveTimeBill([FromBody] TimeBillModel model, IValidator<TimeBillModel> validator)
         {
             try
             {
+                var validation = await validator.ValidateAsync(model);
+
+                if (!validation.IsValid)
+                {
+                    var validationProblemDetails = new ValidationProblemDetails(validation.ToDictionary());
+                    return ValidationProblem(validationProblemDetails);
+                }
+
                 var newEntity = new TimeBill()
                 {
                     EmployeeId = model.EmployeeId,

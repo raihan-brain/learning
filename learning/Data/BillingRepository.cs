@@ -100,7 +100,7 @@ namespace learning.Data
             var bill = await _context.timeBills
                 .Include(b => b.Employee)
                 .Include(b => b.Customer)
-                .ThenInclude(c => c.Address)
+                .ThenInclude(c => c!.Address)
                 .Where(b => b.Id == id)
                 .FirstOrDefaultAsync();
             return bill;
