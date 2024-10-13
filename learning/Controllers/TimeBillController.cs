@@ -3,6 +3,7 @@ using learning.Data.Entities;
 using learning.Filters;
 using learning.Models;
 using learning.Validators;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 
 namespace learning.Controllers
@@ -50,15 +51,17 @@ namespace learning.Controllers
             try
             {
 
-                var newEntity = new TimeBill()
-                {
-                    EmployeeId = model.EmployeeId,
-                    CustomerId = model.CustomerId,
-                    Hours = model.HoursWorked,
-                    BillingRate = model.Rate,
-                    Date = model.Date,
-                    WorkedPerformed = model.Work
-                };
+                var newEntity = model.Adapt<TimeBill>();
+
+                //var newEntity = new TimeBill()
+                //{
+                //    EmployeeId = model.EmployeeId,
+                //    CustomerId = model.CustomerId,
+                //    Hours = model.HoursWorked,
+                //    BillingRate = model.Rate,
+                //    Date = model.Date,
+                //    WorkedPerformed = model.Work
+                //};
                 _repository.AddEntity(newEntity);
                 if (await _repository.SaveChanges())
                 {
