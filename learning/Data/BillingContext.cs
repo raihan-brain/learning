@@ -22,7 +22,7 @@ namespace learning.Data
 
             var connectionString = _config["ConnectionStrings:BillingDb"];
 
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlServer(connectionString).LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

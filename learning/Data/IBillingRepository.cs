@@ -11,5 +11,7 @@ namespace learning.Data
         Task<bool> SaveChanges();
         Task<Customer?> GetCustomer(int id);
         Task<TimeBill?> GetTimeBill(int id);
+        Task<IEnumerable<TimeBill>> GetTimeBillsForCustomer(int id);
+        Task<TimeBill> GetTimeBillForCustomer(int id, int billId);
     }
-}
+} 

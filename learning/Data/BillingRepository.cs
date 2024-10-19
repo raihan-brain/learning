@@ -105,5 +105,23 @@ namespace learning.Data
                 .FirstOrDefaultAsync();
             return bill;
         }
+
+        public async Task<IEnumerable<TimeBill>> GetTimeBillsForCustomer(int id)
+        {
+            return await _context.timeBills
+                .Where(b =>b.CustomerId != null && b.Customer.Id == id)
+                .Include(b => b.Employee)
+                .Include(b => b.Customer)
+                .ToListAsync();
+        }
+
+        public async Task<TimeBill> GetTimeBillForCustomer(int id, int billId)
+        {
+            return await _context.timeBills
+                .Where(b => b.CustomerId != null && b.Customer != null && b.Customer.Id == id && b.Id == billId)
+                .Include(b => b.Employee)
+                .Include(b => b.Customer)
+                .FirstOrDefaultAsync();
+        }
     }
 }
